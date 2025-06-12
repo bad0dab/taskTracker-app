@@ -1,23 +1,33 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
-import pkg from 'pg';
-const { Pool } = pkg;
-
+import { Client } from 'pg';
+import cors from 'cors';
 
 const app = express();
 const port = 6968;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+const client = new Client({
+  host: 'localhost',
+  user: 'postgres',
+  port: 6969,        
+  password: '1234',
+  database: 'postgres'
 });
 
+client.connect()
+  .then(() => console.log('Connected to PostgreSQL'))
+  .catch(err => console.error('Database connection error:', err.stack));
 
-app.get('/', async (req, res) => {
-  console.log('GET / received');
+app.use(cors({
+  origin: 'http://localhost:6969'
+}));
+app.use(express.json());
+
+app.get('/task:id', async (req, res) => {
+    const id = req.params.id;
   try {
-    res.send('Test risposta');
+    const result = await client.query('SELECT * FROM tasks');
+    console.log(result.rows);
+    res.send(result.rows);
   } catch (err) {
     console.error(err);
     res.status(500).send('Errore');
