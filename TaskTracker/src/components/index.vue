@@ -1,11 +1,12 @@
 <script setup>
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { ref } from 'vue'
+import RowCreation from './RowCreation.vue'
 
 defineProps({
 })
 
-function addTask(task, status, dateAdded) {
+function addTask(task, status, dateAdded) { 
   const taskList = document.getElementById('task-list');
   const newRow = document.createElement('tr');
 
@@ -20,7 +21,8 @@ function addTask(task, status, dateAdded) {
 
 </script>
 
-<template>
+<template> 
+  
   <div>
 <h1 class="text-center mt-5 ">
   Task Tracker
@@ -29,7 +31,7 @@ function addTask(task, status, dateAdded) {
     <div style="display: flex; justify-content: center; " class="mt-5 text-center" >
   <table class="centered-table">
     <thead>
-      <tr style="background-color: gray;">
+      <tr style="background-color: gray;" id="table-header">
         <th>Task</th>
         <th>Status</th>
         <th>Date added</th>
@@ -57,6 +59,9 @@ function addTask(task, status, dateAdded) {
   border: 1px solid #333; 
   padding: 8px;
 }
-tr:hover {
-background-color: blue;}
+tr:not(#table-header):hover {
+background-color: rgb(227, 227, 227);
+color: black;
+
+}
 </style>
